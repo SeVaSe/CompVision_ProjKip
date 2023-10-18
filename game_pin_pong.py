@@ -122,8 +122,7 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
         frame = cv2.circle(frame, (ball_x, ball_y), 13, (252, 3, 3), -1)
 
         # Отображение счета
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(frame, f"Blue: {left_score} Green: {right_score}", (10, 50), font, 1, (255, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame, f"Синий: {left_score} Зеленый: {right_score}", (10, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         cv2.imshow("Ping Pong Game", frame)

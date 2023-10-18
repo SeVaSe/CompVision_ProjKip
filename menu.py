@@ -119,16 +119,16 @@ while fl:
 
 
             overlay = frame.copy()
-            cv2.putText(frame, "DEVELOPMENT", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.putText(frame, "В РАЗРАБОТКЕ", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, pink_rect[:2], (pink_rect[0] + pink_rect[2], pink_rect[1] + pink_rect[3]), (255, 105, 180), -1)
 
-            cv2.putText(frame, "QUIZ-PROG", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.putText(frame, "ВИКТОРИНА", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, red_rect[:2], (red_rect[0] + red_rect[2], red_rect[1] + red_rect[3]), (0, 0, 255), -1)
 
-            cv2.putText(frame, "PIN-PONG", (blue_rect[0], blue_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.putText(frame, "ПИН-ПОНГ", (blue_rect[0], blue_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, blue_rect[:2], (blue_rect[0] + blue_rect[2], blue_rect[1] + blue_rect[3]), (255, 0, 0), -1)
 
-            cv2.putText(frame, "SNAKE-GAME", (green_rect[0], green_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.putText(frame, "ЗМЕЙКА", (green_rect[0], green_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, green_rect[:2], (green_rect[0] + green_rect[2], green_rect[1] + green_rect[3]), (0, 255, 0), -1)
 
             cv2.addWeighted(overlay, 0.5, frame, 1 - 0.5, 0, frame)
