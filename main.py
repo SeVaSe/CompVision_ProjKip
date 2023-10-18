@@ -3,7 +3,6 @@ import mediapipe as mp
 import pygame
 import random
 import subprocess
-from menu import men
 
 
 # Инициализация Pygame
@@ -39,7 +38,8 @@ def run_snake_game():
     mp_hands = mp.solutions.hands
 
     # Инициализация захвата видео
-    cap = cv2.VideoCapture(1)
+
+    cap = cv2.VideoCapture(1)  # 111111111111111111111111111111111111111111
 
     hand_x = 0
     hand_y = 0
@@ -174,7 +174,7 @@ def run_snake_game():
 
                 clock.tick(snake_speed)
 
-    
+
     cv2.destroyAllWindows()
     cap.release()
     pygame.quit()
