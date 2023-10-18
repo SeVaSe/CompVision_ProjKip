@@ -3,8 +3,8 @@ import mediapipe as mp
 import threading
 import math
 
-from main import run_snake_game
-from null_crest import start_cross_toes
+from game_snake import run_snake_game
+from game_pin_pong import run_pin_pong_game
 
 
 def calculate_distance(point1, point2):
@@ -12,20 +12,22 @@ def calculate_distance(point1, point2):
     x2, y2 = point2
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-def open_another_file():
-    run_snake_game()
-
 def start_game():
     global game_active
     game_active = True
     cv2.destroyWindow("Menu")
-    open_another_file()
+    run_snake_game()
+
+def start_game_2():
+    global game_active
+    game_active = True
+    cv2.destroyWindow("Menu")
+    run_pin_pong_game()
 
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-cv2.namedWindow("Menu", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("Menu", 800, 600)
+
 
 rectangle_x = 30
 rectangle_y = 30
@@ -47,12 +49,15 @@ green_rect = (30, 30, 220, 100)  # Начальные координаты и р
 
 while fl:
     if not game_active:
-        cap = cv2.VideoCapture(1) # 111111111111111111111111111111111111111111
+        cap = cv2.VideoCapture(0)  # 111111111111111111111111111111111111111111
         a = cap.set(cv2.CAP_PROP_FPS, frame_rate)
         print(a)
 
         while cap.isOpened():
             ret, frame = cap.read()
+            cv2.namedWindow("Menu", cv2.WINDOW_NORMAL)
+            cv2.resizeWindow("Menu", 800, 600)
+            frame = cv2.flip(frame, 1)  # 1 означает горизонтальное отражение
 
             if not ret:
                 break
@@ -82,45 +87,50 @@ while fl:
                         else:
                             thumb_finger_closed = False
 
+                        # Отслеживание нажатий на прямоугольники и отображение меток
                         if pointer_finger_closed and thumb_finger_closed:
+                            # Змейка
                             if rectangle_x < finger8_x < rectangle_x + rectangle_width and rectangle_y < finger8_y < rectangle_y + rectangle_height:
                                 start_game()
                                 fl = False
                                 cv2.destroyWindow("Menu")
                                 break
 
-                            # Отслеживание нажатий на прямоугольники и отображение меток
+                            # Пин-Понг
+                            if blue_rect[0] < finger8_x < blue_rect[0] + blue_rect[2] and blue_rect[1] < finger8_y < blue_rect[1] + blue_rect[3]:
+                                cv2.putText(frame, "press 2", (blue_rect[0], blue_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                start_game_2()
+                                fl = False
+                                cv2.destroyWindow("Menu")
+                                break
+
                             if pink_rect[0] < finger8_x < pink_rect[0] + pink_rect[2] and pink_rect[1] < finger8_y < pink_rect[1] + pink_rect[3]:
                                 if thumb_finger_closed:
                                     pink_rect_clicked = True
                                 if pink_rect_clicked:
-                                    cv2.putText(frame, "press 2", (pink_rect[0], pink_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                    cv2.putText(frame, "press 3", (pink_rect[0], pink_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                    break
+
                             if red_rect[0] < finger8_x < red_rect[0] + red_rect[2] and red_rect[1] < finger8_y < red_rect[1] + red_rect[3]:
                                 if thumb_finger_closed:
                                     red_rect_clicked = True
                                 if red_rect_clicked:
-                                    cv2.putText(frame, "press 3", (red_rect[0], red_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                            if blue_rect[0] < finger8_x < blue_rect[0] + blue_rect[2] and blue_rect[1] < finger8_y < blue_rect[1] + blue_rect[3]:
-                                if thumb_finger_closed:
-                                    blue_rect_clicked = True
-                                if blue_rect_clicked:
-                                    start_cross_toes()
-                                    cv2.destroyWindow("Menu")
-                                    cv2.putText(frame, "press 4", (blue_rect[0], blue_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                                    break
+                                    cv2.putText(frame, "press 4", (red_rect[0], red_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+
 
             overlay = frame.copy()
-            cv2.putText(frame, "QUIZ-PROG", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),2)
+            cv2.putText(frame, "DEVELOPMENT", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, pink_rect[:2], (pink_rect[0] + pink_rect[2], pink_rect[1] + pink_rect[3]), (255, 105, 180), -1)
 
-            cv2.putText(frame, "QUIZ-PROG", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),2)
+            cv2.putText(frame, "QUIZ-PROG", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, red_rect[:2], (red_rect[0] + red_rect[2], red_rect[1] + red_rect[3]), (0, 0, 255), -1)
 
-            cv2.putText(frame, "CROSS&TOES", (blue_rect[0], blue_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),2)
+            cv2.putText(frame, "PIN-PONG", (blue_rect[0], blue_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, blue_rect[:2], (blue_rect[0] + blue_rect[2], blue_rect[1] + blue_rect[3]), (255, 0, 0), -1)
 
-            cv2.putText(frame, "SNAKE-GAME", (green_rect[0], green_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+            cv2.putText(frame, "SNAKE-GAME", (green_rect[0], green_rect[1] + 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.rectangle(overlay, green_rect[:2], (green_rect[0] + green_rect[2], green_rect[1] + green_rect[3]), (0, 255, 0), -1)
+
             cv2.addWeighted(overlay, 0.5, frame, 1 - 0.5, 0, frame)
 
             cv2.imshow("Menu", frame)
