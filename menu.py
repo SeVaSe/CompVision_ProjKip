@@ -7,6 +7,7 @@ import math
 from game_snake import run_snake_game
 from game_pin_pong import run_pin_pong_game
 from game_circle_reaction import run_circle_reaction_game
+from science_project_growth import run_science_project
 
 # Функция для вычисления расстояния между двумя точками на плоскости
 def calculate_distance(point1, point2):
@@ -32,6 +33,12 @@ def start_game_3():
     game_active = True
     cv2.destroyWindow("Menu")
     run_circle_reaction_game()
+
+def start_game_4():
+    global game_active
+    game_active = True
+    cv2.destroyWindow("Menu")
+    run_science_project()
 
 # Импорт модулей MediaPipe для работы с руки и отслеживания жестов
 mp_drawing = mp.solutions.drawing_utils
@@ -128,11 +135,12 @@ try:
 
                                 # Обработка действий внутри красного прямоугольника
                                 if red_rect[0] < finger8_x < red_rect[0] + red_rect[2] and red_rect[1] < finger8_y < red_rect[1] + red_rect[3]:
-                                    if thumb_finger_closed:
-                                        red_rect_clicked = True
-                                    if red_rect_clicked:
-                                        cv2.putText(frame, "press 4", (red_rect[0], red_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-
+                                    cv2.putText(frame, "press 4", (pink_rect[0], pink_rect[1] - 10),
+                                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                    start_game_4()
+                                    fl = False
+                                    cv2.destroyWindow("Menu")
+                                    break
                 overlay = frame.copy()
 
                 # Отображение меток и прямоугольников для разных игр
