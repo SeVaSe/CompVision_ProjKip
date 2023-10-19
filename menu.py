@@ -5,6 +5,7 @@ import math
 
 from game_snake import run_snake_game
 from game_pin_pong import run_pin_pong_game
+from game_circle_reaction import run_circle_raction_game
 
 
 def calculate_distance(point1, point2):
@@ -23,6 +24,12 @@ def start_game_2():
     game_active = True
     cv2.destroyWindow("Menu")
     run_pin_pong_game()
+
+def start_game_3():
+    global game_active
+    game_active = True
+    cv2.destroyWindow("Menu")
+    run_circle_raction_game()
 
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
@@ -105,11 +112,11 @@ while fl:
                                 break
 
                             if pink_rect[0] < finger8_x < pink_rect[0] + pink_rect[2] and pink_rect[1] < finger8_y < pink_rect[1] + pink_rect[3]:
-                                if thumb_finger_closed:
-                                    pink_rect_clicked = True
-                                if pink_rect_clicked:
-                                    cv2.putText(frame, "press 3", (pink_rect[0], pink_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                                    break
+                                cv2.putText(frame, "press 3", (pink_rect[0], pink_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                start_game_3()
+                                fl = False
+                                cv2.destroyWindow("Menu")
+                                break
 
                             if red_rect[0] < finger8_x < red_rect[0] + red_rect[2] and red_rect[1] < finger8_y < red_rect[1] + red_rect[3]:
                                 if thumb_finger_closed:
