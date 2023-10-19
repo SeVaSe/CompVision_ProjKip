@@ -42,7 +42,7 @@ def run_snake_game():
 
         # Инициализация захвата видео
 
-        cap = cv2.VideoCapture(0)  # 111111111111111111111111111111111111111111
+        cap = cv2.VideoCapture(1)  # 111111111111111111111111111111111111111111
 
         hand_x = 0
         hand_y = 0
@@ -181,13 +181,13 @@ def run_snake_game():
         cv2.destroyAllWindows()
         cap.release()
         pygame.quit()
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()
     except:
         print("Со змейкой чет не так")
         cv2.destroyAllWindows()
         pygame.quit()
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()
 
 

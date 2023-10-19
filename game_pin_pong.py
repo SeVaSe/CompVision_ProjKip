@@ -12,7 +12,7 @@ def run_pin_pong_game():
         hands = mp_hands.Hands()
 
         # Инициализация OpenCV
-        cap = cv2.VideoCapture(0)  # Захват видеопотока с камеры
+        cap = cv2.VideoCapture(1)  # Захват видеопотока с камеры
         width = int(cap.get(3))  # Ширина кадра
         height = int(cap.get(4))  # Высота кадра
 
@@ -137,12 +137,12 @@ def run_pin_pong_game():
         cap.release()
         cv2.destroyAllWindows()
         # Запуск меню после завершения игры
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()
     except:
         print("С пинг-понг чет не так")
         cap.release()
         cv2.destroyAllWindows()
         # Запуск меню после возникновения ошибки
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()

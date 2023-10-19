@@ -48,6 +48,8 @@ def run_science_project():
 
         # Преобразование кадра в черно-белое изображение для ускорения обработки
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        cv2.namedWindow("Full Body Detection", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Full Body Detection", 800, 600)
 
         # Обнаружение тела на кадре
         results = holistic.process(frame)
@@ -100,5 +102,6 @@ def run_science_project():
     cap.release()
     cv2.destroyAllWindows()
     print("Пока3")
-    subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+    subprocess.run(
+        ["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
     sys.exit()

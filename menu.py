@@ -3,11 +3,18 @@ import mediapipe as mp
 import threading
 import math
 
-# Импортируем функции запуска различных игр
-from game_snake import run_snake_game
-from game_pin_pong import run_pin_pong_game
-from game_circle_reaction import run_circle_reaction_game
-from science_project_growth import run_science_project
+from class_gameBar import GameBar
+
+
+
+################################################################################################
+# Импортируем функции запуска различных игр !!!! создан класс для запуска проектов, подключение не требуется
+# from game_snake import run_snake_game
+# from game_pin_pong import run_pin_pong_game
+# from game_circle_reaction import run_circle_reaction_game
+# from science_project_growth import run_science_project
+################################################################################################
+
 
 # Функция для вычисления расстояния между двумя точками на плоскости
 def calculate_distance(point1, point2):
@@ -15,30 +22,36 @@ def calculate_distance(point1, point2):
     x2, y2 = point2
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-# Функции для запуска различных игр
-def start_game():
-    global game_active
-    game_active = True
-    cv2.destroyWindow("Menu")
-    run_snake_game()
 
-def start_game_2():
-    global game_active
-    game_active = True
-    cv2.destroyWindow("Menu")
-    run_pin_pong_game()
+################################################################################################
+# подключен класс с запуском проектов
+# Функции для запуска различных игр   !!!!!!! перенос в класс
+# def start_game():
+#     global game_active
+#     game_active = True
+#     cv2.destroyWindow("Menu")
+#     run_snake_game()
+#
+# def start_game_2():
+#     global game_active
+#     game_active = True
+#     cv2.destroyWindow("Menu")
+#     run_pin_pong_game()
+#
+# def start_game_3():
+#     global game_active
+#     game_active = True
+#     cv2.destroyWindow("Menu")
+#     run_circle_reaction_game()
+#
+# def start_game_4():
+#     global game_active
+#     game_active = True
+#     cv2.destroyWindow("Menu")
+#     run_science_project()
+################################################################################################
 
-def start_game_3():
-    global game_active
-    game_active = True
-    cv2.destroyWindow("Menu")
-    run_circle_reaction_game()
 
-def start_game_4():
-    global game_active
-    game_active = True
-    cv2.destroyWindow("Menu")
-    run_science_project()
 
 # Импорт модулей MediaPipe для работы с руки и отслеживания жестов
 mp_drawing = mp.solutions.drawing_utils
@@ -112,7 +125,7 @@ try:
                             if pointer_finger_closed and thumb_finger_closed:
                                 # Запуск игры "Змейка"
                                 if rectangle_x < finger8_x < rectangle_x + rectangle_width and rectangle_y < finger8_y < rectangle_y + rectangle_height:
-                                    start_game()
+                                    GameBar.start_game_1()
                                     fl = False
                                     cv2.destroyWindow("Menu")
                                     break
@@ -120,7 +133,7 @@ try:
                                 # Запуск игры "Пин-Понг"
                                 if blue_rect[0] < finger8_x < blue_rect[0] + blue_rect[2] and blue_rect[1] < finger8_y < blue_rect[1] + blue_rect[3]:
                                     cv2.putText(frame, "press 2", (blue_rect[0], blue_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                                    start_game_2()
+                                    GameBar.start_game_2()
                                     fl = False
                                     cv2.destroyWindow("Menu")
                                     break
@@ -128,7 +141,7 @@ try:
                                 # Запуск игры "Реакция"
                                 if pink_rect[0] < finger8_x < pink_rect[0] + pink_rect[2] and pink_rect[1] < finger8_y < pink_rect[1] + pink_rect[3]:
                                     cv2.putText(frame, "press 3", (pink_rect[0], pink_rect[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                                    start_game_3()
+                                    GameBar.start_game_3()
                                     fl = False
                                     cv2.destroyWindow("Menu")
                                     break
@@ -137,7 +150,7 @@ try:
                                 if red_rect[0] < finger8_x < red_rect[0] + red_rect[2] and red_rect[1] < finger8_y < red_rect[1] + red_rect[3]:
                                     cv2.putText(frame, "press 4", (pink_rect[0], pink_rect[1] - 10),
                                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
-                                    start_game_4()
+                                    GameBar.start_game_4()
                                     fl = False
                                     cv2.destroyWindow("Menu")
                                     break
@@ -147,8 +160,8 @@ try:
                 cv2.putText(frame, "РЕАКЦИЯ", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
                 cv2.rectangle(overlay, pink_rect[:2], (pink_rect[0] + pink_rect[2], pink_rect[1] + pink_rect[3]), (255, 105, 180), -1)
 
-                cv2.putText(frame, "ВИКТОРИНА", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
-                cv2.rectangle(overlay, red_rect[:2], (red_rect[0] + red_rect[2], red_rect[1] + red_rect[3]), (0, 0, 255), -1)
+                cv2.putText(frame, "НАУЧНЫЙ", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+                cv2.rectangle(overlay, red_rect[:2], (red_rect[0] + red_rect[2], red_rect[1] + red_rect[3]), (89, 44, 212), -1)
 
                 cv2.putText(frame, "ПИН-ПОНГ", (blue_rect[0], blue_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
                 cv2.rectangle(overlay, blue_rect[:2], (blue_rect[0] + blue_rect[2], blue_rect[1] + blue_rect[3]), (255, 0, 0), -1)

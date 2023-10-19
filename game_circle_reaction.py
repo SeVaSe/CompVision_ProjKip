@@ -63,7 +63,7 @@ def run_circle_reaction_game():
         red_circles.clear()
 
     # Инициализация видеопотока с веб-камеры
-    video = cv2.VideoCapture(0)
+    video = cv2.VideoCapture(1)
     try:
         with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
             while video.isOpened():
@@ -165,11 +165,11 @@ def run_circle_reaction_game():
 
         video.release()
         cv2.destroyAllWindows()
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()  # Завершить программу
     except:
         video.release()
         cv2.destroyAllWindows()
         print("С кружками что-то не так")
-        subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
+        subprocess.run(["C:/PYTHON_/_PROJECT_PYTHON/Python_Project_Other/CompVision_ProjKip/venv/Scripts/python.exe", "menu.py"])
         sys.exit()  # Завершить программу
