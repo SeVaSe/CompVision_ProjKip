@@ -6,53 +6,49 @@ import time
 import random
 import sys
 
-
+# Инициализация библиотек
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 score = 0
 level = 1
-time_limit = 30  # 30 seconds for each level
+time_limit = 30  # 30 секунд на каждый уровень
 lives = 3  # Изначальное количество жизней
 
-enemies = []
-red_circles = []
+enemies = []  # Список врагов (круги)
+red_circles = []  # Список красных кругов
 num_enemies = 1  # Изначальное количество врагов
 
-# Add variables for time tracking and game state
+# Переменные для отслеживания времени и состояния игры
 start_time = time.time()
 game_over = False
-pixelCoordinatesLandmark = None
+pixelCoordinatesLandmark = None  # Переменная для хранения координат указательного пальца
 
-def run_circle_raction_game():
-    global score
-    global level
-    global time_limit
-    global lives
-    global game_over
-    global start_time
-    global enemies
-    global red_circles
-    global num_enemies
-    global pixelCoordinatesLandmark
+def run_circle_reaction_game():
+    global score, level, time_limit, lives, game_over, start_time, enemies, red_circles, num_enemies, pixelCoordinatesLandmark
 
+    # Функция для генерации врагов (кругов) с заданным количеством
     def generate_enemies(num):
         global enemies
         enemies = [(random.randint(50, 600), random.randint(50, 400)) for _ in range(num)]
 
+    # Функция для генерации красных кругов с заданным количеством
     def generate_red_circles(num):
         global red_circles
         red_circles = [(random.randint(50, 600), 400) for _ in range(num)]
 
+    # Функция для отрисовки врагов (кругов)
     def enemy():
         global enemies
         for x_enemy, y_enemy in enemies:
             cv2.circle(image, (x_enemy, y_enemy), 25, (0, 200, 0), 5)
 
+    # Функция для отрисовки красных кругов
     def red_circle():
         global red_circles
         for x_red, y_red in red_circles:
             cv2.circle(image, (x_red, y_red), 25, (0, 0, 200), 5)
 
+    # Функция для отображения экрана с сообщением о конце игры
     def game_over_screen():
         global score, game_over, start_time, num_enemies, lives
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -66,6 +62,7 @@ def run_circle_raction_game():
         lives = 3  # Сбросить количество жизней
         red_circles.clear()
 
+    # Инициализация видеопотока с веб-камеры
     video = cv2.VideoCapture(0)
     try:
         with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
@@ -173,7 +170,6 @@ def run_circle_raction_game():
     except:
         video.release()
         cv2.destroyAllWindows()
-        print("С кружками что то не так")
+        print("С кружками что-то не так")
         subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
         sys.exit()  # Завершить программу
-

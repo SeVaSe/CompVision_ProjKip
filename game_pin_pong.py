@@ -1,55 +1,55 @@
 import subprocess
 import sys
-
 import cv2
 import mediapipe as mp
 import random
 
-
-def run_pin_pong_game():# Инициализация MediaPipe Hands
+# Функция для запуска игры в пинг-понг
+def run_pin_pong_game():
     try:
+        # Инициализация MediaPipe Hands
         mp_hands = mp.solutions.hands
         hands = mp_hands.Hands()
 
         # Инициализация OpenCV
-        cap = cv2.VideoCapture(0)
-        width = int(cap.get(3))
-        height = int(cap.get(4))
+        cap = cv2.VideoCapture(0)  # Захват видеопотока с камеры
+        width = int(cap.get(3))  # Ширина кадра
+        height = int(cap.get(4))  # Высота кадра
 
         # Параметры платформ
-        paddle_height = 100
-        paddle_width = 20
-        left_paddle_y = height // 2 - paddle_height // 2
-        right_paddle_y = height // 2 - paddle_height // 2
-        paddle_speed = 10
+        paddle_height = 100  # Высота платформы
+        paddle_width = 20  # Ширина платформы
+        left_paddle_y = height // 2 - paddle_height // 2  # Начальная позиция левой платформы
+        right_paddle_y = height // 2 - paddle_height // 2  # Начальная позиция правой платформы
+        paddle_speed = 10  # Скорость движения платформы
 
         # Начальные параметры мяча
-        ball_x = width // 2
-        ball_y = height // 2
-        ball_speed_x = random.choice([-8, 8])  # Случайное направление мяча
-        ball_speed_y = random.choice([-8, 8])
+        ball_x = width // 2  # Начальная позиция мяча по горизонтали
+        ball_y = height // 2  # Начальная позиция мяча по вертикали
+        ball_speed_x = random.choice([-8, 8])  # Случайное направление движения мяча по горизонтали
+        ball_speed_y = random.choice([-8, 8])  # Случайное направление движения мяча по вертикали
 
         # Очки игроков
-        left_score = 0
-        right_score = 0
+        left_score = 0  # Очки левого игрока
+        right_score = 0  # Очки правого игрока
 
         # Флаги для выбора цвета разметки
-        left_player_color = (0, 0, 255)  # Синий
-        right_player_color = (0, 255, 0)  # Зеленый
+        left_player_color = (0, 0, 255)  # Цвет левой платформы (синий)
+        right_player_color = (0, 255, 0)  # Цвет правой платформы (зеленый)
 
         while True:
-            ret, frame = cap.read()
+            ret, frame = cap.read()  # Захват кадра с камеры
             cv2.namedWindow("Ping Pong Game", cv2.WINDOW_NORMAL)
             cv2.resizeWindow("Ping Pong Game", 800, 600)
 
             if not ret:
                 break
 
-            # изображение горизонтально
+            # Изображение горизонтально (зеркальное отражение)
             frame = cv2.flip(frame, 1)  # 1 означает горизонтальное отражение
 
-            # Обработка движения рук
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Обработка движения рук с использованием MediaPipe Hands
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Конвертирование BGR в RGB
             results = hands.process(frame)
 
             # Обработчик для левой и правой руки
@@ -58,7 +58,7 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
 
             if results.multi_hand_landmarks:
                 for landmarks in results.multi_hand_landmarks:
-                    # Определяем, какая рука (левая или правая)
+                    # Определение, какая рука (левая или правая)
                     if landmarks.landmark[mp_hands.HandLandmark.WRIST].x < 0.5:
                         left_hand_landmarks = landmarks
                     else:
@@ -72,7 +72,7 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
                 # Управление левой платформой на основе движения указательного пальца
                 left_paddle_y = y - paddle_height // 2
 
-                # Рисуем точки руки с цветом левой платформы
+                # Рисование точек руки с цветом левой платформы
                 for landmark in left_hand_landmarks.landmark:
                     x_lm, y_lm = int(landmark.x * width), int(landmark.y * height)
                     frame = cv2.circle(frame, (x_lm, y_lm), 5, left_player_color, -1)
@@ -85,7 +85,7 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
                 # Управление правой платформой на основе движения указательного пальца
                 right_paddle_y = y - paddle_height // 2
 
-                # Рисуем точки руки с цветом правой платформы
+                # Рисование точек руки с цветом правой платформы
                 for landmark in right_hand_landmarks.landmark:
                     x_lm, y_lm = int(landmark.x * width), int(landmark.y * height)
                     frame = cv2.circle(frame, (x_lm, y_lm), 5, right_player_color, -1)
@@ -108,7 +108,7 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
                 right_score += 1
                 ball_x = width // 2
                 ball_y = height // 2
-                # Установите начальную скорость после гола
+                # Установка начальной скорости мяча после гола
                 ball_speed_x = random.choice([-8, 8])
                 ball_speed_y = random.choice([-8, 8])
 
@@ -116,14 +116,14 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
                 left_score += 1
                 ball_x = width // 2
                 ball_y = height // 2
-                # Установите начальную скорость после гола
+                # Установка начальной скорости мяча после гола
                 ball_speed_x = random.choice([-8, 8])
                 ball_speed_y = random.choice([-8, 8])
 
             # Наложение игровых объектов на видеопоток
-            frame = cv2.rectangle(frame, (0, left_paddle_y), (paddle_width, left_paddle_y + paddle_height), (0, 0, 255), -1)
-            frame = cv2.rectangle(frame, (width - paddle_width, right_paddle_y), (width, right_paddle_y + paddle_height), (0, 255, 0), -1)
-            frame = cv2.circle(frame, (ball_x, ball_y), 13, (252, 3, 3), -1)
+            frame = cv2.rectangle(frame, (0, left_paddle_y), (paddle_width, left_paddle_y + paddle_height), (0, 0, 255), -1)  # Левая платформа
+            frame = cv2.rectangle(frame, (width - paddle_width, right_paddle_y), (width, right_paddle_y + paddle_height), (0, 255, 0), -1)  # Правая платформа
+            frame = cv2.circle(frame, (ball_x, ball_y), 13, (252, 3, 3), -1)  # Мяч
 
             # Отображение счета
             cv2.putText(frame, f"Синий: {left_score} Зеленый: {right_score}", (10, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
@@ -136,11 +136,13 @@ def run_pin_pong_game():# Инициализация MediaPipe Hands
 
         cap.release()
         cv2.destroyAllWindows()
+        # Запуск меню после завершения игры
         subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
         sys.exit()
     except:
-        print("С пин-понг чет не так")
+        print("С пинг-понг чет не так")
         cap.release()
         cv2.destroyAllWindows()
+        # Запуск меню после возникновения ошибки
         subprocess.run(["D:/PYTHON_/PROJECT_PYTHON_/otherPY/projDraw3D/venv/Scripts/python.exe", "menu.py"])
         sys.exit()
