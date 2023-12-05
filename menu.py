@@ -74,6 +74,7 @@ thumb_finger_closed = False
 
 # Определение переменных для дополнительных прямоугольников
 pink_rect = (30, 350, 220, 100)
+yelow_rect = (30, 200, 220, 100)
 red_rect = (400, 350, 220, 100)
 blue_rect = (400, 30, 220, 100)
 green_rect = (30, 30, 220, 100)
@@ -154,11 +155,26 @@ try:
                                     fl = False
                                     cv2.destroyWindow("Menu")
                                     break
+
+                                if yelow_rect[0] < finger8_x < yelow_rect[0] + yelow_rect[2] and yelow_rect[1] < finger8_y < yelow_rect[1] + yelow_rect[3]:
+                                    cv2.putText(frame, "press 5", (yelow_rect[0], yelow_rect[1] - 10),
+                                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 2)
+                                    GameBar.start_game_5()
+                                    fl = False
+                                    cv2.destroyWindow("Menu")
+                                    break
                 overlay = frame.copy()
 
+
+                ################################################################################################
                 # Отображение меток и прямоугольников для разных игр
                 cv2.putText(frame, "РЕАКЦИЯ", (pink_rect[0], pink_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
                 cv2.rectangle(overlay, pink_rect[:2], (pink_rect[0] + pink_rect[2], pink_rect[1] + pink_rect[3]), (255, 105, 180), -1)
+
+                cv2.putText(frame, "ДЕТЕКТ", (yelow_rect[0], yelow_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1,
+                            (255, 255, 255), 2)
+                cv2.rectangle(overlay, yelow_rect[:2], (yelow_rect[0] + yelow_rect[2], yelow_rect[1] + yelow_rect[3]),
+                              (255, 255, 212), -1)
 
                 cv2.putText(frame, "НАУЧНЫЙ", (red_rect[0], red_rect[1] + 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
                 cv2.rectangle(overlay, red_rect[:2], (red_rect[0] + red_rect[2], red_rect[1] + red_rect[3]), (89, 44, 212), -1)

@@ -4,6 +4,7 @@ from game_snake import run_snake_game
 from game_pin_pong import run_pin_pong_game
 from game_circle_reaction import run_circle_reaction_game
 from science_project_growth import run_science_project
+from face_d import run_face_d
 
 
 class GameBar:
@@ -39,3 +40,11 @@ class GameBar:
         game_active = True
         cv2.destroyWindow("Menu")
         run_science_project()
+
+    @staticmethod
+    def start_game_5():
+        """Метод для запуска Научного проекта"""
+        global game_active
+        game_active = True
+        cv2.destroyWindow("Menu")
+        run_face_d()
